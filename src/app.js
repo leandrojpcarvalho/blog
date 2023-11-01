@@ -1,16 +1,17 @@
 const express = require('express');
+const Routes = require('./routes');
 
 // ...
 
 const app = express();
+app.use(express.json());
 
 // não remova ou mova esse endpoint
 app.get('/', (_request, response) => {
   response.send();
 });
 
-app.use(express.json());
-
+app.use('/post', Routes.routePost);
 // ...
 
 // É importante exportar a constante `app`,
