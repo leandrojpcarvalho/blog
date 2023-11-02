@@ -14,6 +14,14 @@ const newUser = async (body) => {
   return { status: 201, payload: utils.tokenGenerate(result.dataValues) };
 };
 
+const getAll = async () => {
+  const payload = await User.findAll({
+    attributes: ['displayName', 'id', 'image', 'email'],
+  });
+  return { status: 200, payload };
+};
+
 module.exports = {
   newUser,
+  getAll,
 };

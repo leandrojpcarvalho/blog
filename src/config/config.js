@@ -1,5 +1,6 @@
 const environment = process.env.NODE_ENV || 'test';
 
+console.log(environment);
 const suffix = {
   dev: '-dev',
   development: '-dev',

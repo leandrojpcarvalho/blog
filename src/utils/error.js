@@ -5,12 +5,18 @@ const errorObj = {
   'string.min': 400,
   CONFLICT: 409,
   'BAD REQUEST': 400,
+  'jwt must be provided': 401,
+  'invalid token': 401,
+  'jwt expired': 401,
+  'jwt malformed': 401,
 };
 
 const objMessage = {
   'Some required fields are missing': ['any.required', 'string.empty'],
   'Invalid fields': ['string.email', 'string.min', 'object.unknown'],
   'User already registered': ['CONFLICT'],
+  'Token not found': ['jwt must be provided'],
+  'Expired or invalid token': ['invalid token', 'jwt expired', 'jwt malformed'],
 };
 
 const errorGenerator = (errorType, erMessage = '') => {
