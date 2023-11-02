@@ -1,5 +1,5 @@
 const routePost = require('express').Router();
-const Controllers = require('../../controllers/users');
+const Controllers = require('../../controllers');
 
 routePost.get('/', Controllers.post.getAll);
 
