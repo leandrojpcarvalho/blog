@@ -21,7 +21,19 @@ const getAll = async () => {
   return { status: 200, payload };
 };
 
+const getById = async (id) => {
+  const payload = await User.findOne({
+    where: {
+      id,
+    },
+    attributes: ['id', 'displayName', 'email', 'image'],
+  });
+  if (payload) return { status: 200, payload };
+  return utils.errorGenerator('NOT FOUND', 'User does not exist');
+};
+
 module.exports = {
   newUser,
   getAll,
+  getById,
 };
