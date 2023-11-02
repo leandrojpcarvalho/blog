@@ -11,9 +11,11 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.use('/post', Routes.routePost);
-app.use('/login', Routes.routeLogin);
-app.use('/user', Routes.routeUser);
+app.use('/post', Routes.post);
+app.use('/login', Routes.login);
+app.use('/user', Routes.user);
+app.use('/categories', Routes.categories);
+
 // ...
 
 // É importante exportar a constante `app`,

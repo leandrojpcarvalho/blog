@@ -1,11 +1,13 @@
-const routeLogin = require('./login');
-const routePost = require('./post/routePost');
-const routeUser = require('./user');
+const login = require('./login');
+const post = require('./post/routePost');
+const user = require('./user');
+const categories = require('./categories');
 
 const Routes = {
-  routePost,
-  routeLogin,
-  routeUser,
+  post,
+  login,
+  user,
+  categories,
 };
 
 module.exports = Routes;

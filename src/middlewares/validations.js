@@ -12,7 +12,7 @@ const loginValidation = async (req, res, next) => {
   } catch (error) {
     const { status, payload } = utils.errorGenerator(
       error.details[0].type,
-      error.message
+      error.message,
     );
     return res.status(status).json(payload);
   }
@@ -26,7 +26,7 @@ const userValidation = async (req, res, next) => {
   } catch (error) {
     const { status, payload } = utils.errorGenerator(
       error.details[0].type,
-      error.message
+      error.message,
     );
     res.status(status).json(payload);
   }
@@ -47,8 +47,20 @@ const tokenValidation = async (req, res, next) => {
   }
 };
 
+const categoryValidation = async (req, res, next) => {
+  const { body } = req;
+  try {
+    await schemas.categorySchema.validateAsync(body);
+    next();
+  } catch (error) {
+    const { status, payload } = utils.errorGenerator(error.details[0].type, error.message);
+    return res.status(status).json(payload);
+  }
+};
+
 module.exports = {
   loginValidation,
   userValidation,
   tokenValidation,
+  categoryValidation,
 };

@@ -1,9 +1,9 @@
-const routeUser = require('express').Router();
+const user = require('express').Router();
 const Controllers = require('../../controllers');
 const middlewares = require('../../middlewares');
 
-routeUser.post('/', middlewares.userValidation, Controllers.user.newUser);
-routeUser.get('/:id', middlewares.tokenValidation, Controllers.user.getById);
-routeUser.get('/', middlewares.tokenValidation, Controllers.user.getAll);
+user.post('/', middlewares.userValidation, Controllers.user.newUser);
+user.get('/:id', middlewares.tokenValidation, Controllers.user.getById);
+user.get('/', middlewares.tokenValidation, Controllers.user.getAll);
 
-module.exports = routeUser;
+module.exports = user;
