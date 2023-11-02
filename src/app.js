@@ -13,6 +13,7 @@ app.get('/', (_request, response) => {
 
 app.use('/post', Routes.routePost);
 app.use('/login', Routes.routeLogin);
+app.use('/user', Routes.routeUser);
 // ...
 
 // É importante exportar a constante `app`,

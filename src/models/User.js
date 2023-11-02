@@ -6,9 +6,15 @@ const UsersSchema = (sequelize, DataType) => {
       primaryKey: true
     },
     displayName: DataType.STRING,
-    email: DataType.STRING,
+    email: { 
+      type: DataType.STRING,
+      unique: true
+    },
     password: DataType.STRING,
-    image: DataType.STRING,
+    image: {
+      type: DataType.STRING,
+      allowNull: true,
+    },
   }, {
     tableName: 'users',
     underscored: true,

@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const { User } = require('../../models');
+const utils = require('../../utils');
 
 const signIn = async (body) => {
   const { email, password } = body;
@@ -11,15 +11,9 @@ const signIn = async (body) => {
   });
   if (result) {
     delete result.dataValues.password;
-    const payload = {};
-    payload.token = jwt.sign(
-      { payload: result.dataValues },
-      process.env.JWT_SECRET || 'suaSenhaSecreta',
-      { expiresIn: 2000 },
-    );
-    return { status: 200, payload };
+    return { status: 200, payload: utils.tokenGenerate(result.dataValues) };
   }
-  return { status: 400, payload: { message: 'Invalid fields' } };
+  return utils.errorGenerator('BAD REQUEST', 'Invalid fields');
 };
 
 module.exports = {

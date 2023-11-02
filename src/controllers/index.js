@@ -1,10 +1,10 @@
 const login = require('./login');
-const users = require('./users');
+const user = require('./user');
 const post = require('./post');
 
 const Controllers = {
   login,
-  users,
+  user,
   post,
 };
 
