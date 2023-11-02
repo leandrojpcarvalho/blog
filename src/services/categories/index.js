@@ -12,6 +12,9 @@ const newCategory = async (body) => {
   return { status: 201, payload: dataValues };
 };
 
+const getAll = async () => ({ status: 200, payload: await Category.findAll() });
+
 module.exports = {
   newCategory,
+  getAll,
 };
