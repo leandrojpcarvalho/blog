@@ -43,7 +43,32 @@ const newPost = async (body) => {
   return { status: 201, payload: dataValues };
 };
 
+const getById = async (id) => {
+  const result = await BlogPost.findAll({ 
+    where: { id },
+    include: [
+      {
+        attributes: {
+          exclude: ['password'],
+        },
+        model: User,
+        as: 'user',
+      },
+      {
+        // attributes: {
+        //   exclude: ['PostCategory'],
+        // },
+        model: Category,
+        as: 'categories',
+      },
+    ],
+  });
+  if (!result.length) return utils.errorGenerator('NOT FOUND', 'Post does not exist');
+  return { status: 200, payload: result[0] };
+};
+
 module.exports = {
   getAll,
   newPost,
+  getById,
 };

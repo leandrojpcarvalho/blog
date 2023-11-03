@@ -11,7 +11,14 @@ const newPost = async (req, res) => {
   return res.status(status).json(payload);
 };
 
+const getById = async (req, res) => {
+  const { id } = req.params;
+  const { status, payload } = await Service.post.getById(Number(id));
+  return res.status(status).json(payload);
+};
+
 module.exports = {
   getAll,
   newPost,
+  getById,
 };
