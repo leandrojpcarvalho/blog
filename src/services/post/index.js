@@ -26,7 +26,7 @@ const getAll = async () => {
 
 const newPost = async (body) => {
   const theseCategoriesExists = await utils.validateArray(body, Category);
-  if (theseCategoriesExists.some((e) => e.includes(undefined))) {
+  if (theseCategoriesExists.map((e) => e[0]).includes(undefined)) {
     return utils.errorGenerator(
       'BAD REQUEST',
       'one or more "categoryIds" not found',
