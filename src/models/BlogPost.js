@@ -8,6 +8,8 @@ const BlogPostsSchema=(sequelize, DataTypes) => {
     title: DataTypes.STRING,
     content: DataTypes.STRING,
     userId: DataTypes.INTEGER,
+    published: DataTypes.DATE,
+    updated: DataTypes.DATE,
   },
   {
     tableName:'blog_posts',
