@@ -7,7 +7,13 @@ const BlogPostsSchema=(sequelize, DataTypes) => {
     },
     title: DataTypes.STRING,
     content: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'users',
+        key: 'id'
+      }
+    },
     published: DataTypes.DATE,
     updated: DataTypes.DATE,
   },
@@ -21,11 +27,11 @@ const BlogPostsSchema=(sequelize, DataTypes) => {
     BlogPostsTable.belongsTo(models.User, {
       foreignKey: 'id',
       as: 'user'
-    })
+    });
     BlogPostsTable.hasMany(models.PostCategory, {
       foreignKey: 'postId',
       as: 'posts'
-    })
+    });
   }
 
   return BlogPostsTable
