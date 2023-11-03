@@ -35,6 +35,7 @@ const userValidation = async (req, res, next) => {
 const tokenValidation = async (req, res, next) => {
   const { authorization } = req.headers;
   try {
+    if (!authorization) throw new Error('jwt must be provided');
     const auth = authorization.split(' ')[1]
       ? authorization.split(' ')[1]
       : authorization.split(' ')[0];
@@ -58,9 +59,21 @@ const categoryValidation = async (req, res, next) => {
   }
 };
 
+const postValidation = async (req, res, next) => {
+  const { body } = req;
+  try {
+    await schemas.postSchema.validateAsync(body);
+    next();
+  } catch (error) {
+    const { status, payload } = utils.errorGenerator(error.details[0].type, error.message);
+    res.status(status).json(payload);
+  }
+};
+
 module.exports = {
   loginValidation,
   userValidation,
   tokenValidation,
   categoryValidation,
+  postValidation,
 };
