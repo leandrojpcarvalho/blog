@@ -1,7 +1,21 @@
 const PostCategories = (sequelize, DataTypes) => {
   const PostCategoriesTable = sequelize.define('PostCategory', {
-    postId: DataTypes.INTEGER,
-    categoryId: DataTypes.INTEGER,
+    postId: {
+      type: DataTypes.INTEGER,
+      primaryKey:true,
+      references: {
+        model: 'BlogPost',
+        key: 'id'
+      }
+    },
+    categoryId: {
+      type: DataTypes.INTEGER,
+      primaryKey:true,
+      references: {
+        model: 'Category',
+        key: 'id'
+      }
+    },
   },
   {
     tableName: 'posts_categories',
@@ -14,7 +28,7 @@ const PostCategories = (sequelize, DataTypes) => {
       foreignKey: 'postId',
       otherKey: 'categoryId',
       through: 'PostCategory',
-      as:'category'
+      as:'categories'
     })
     Category.belongsToMany(BlogPost, {
       foreignKey: 'categoryId',
