@@ -28,7 +28,7 @@ const userValidation = async (req, res, next) => {
       error.details[0].type,
       error.message,
     );
-    res.status(status).json(payload);
+    return res.status(status).json(payload);
   }
 };
 
@@ -66,7 +66,18 @@ const postValidation = async (req, res, next) => {
     next();
   } catch (error) {
     const { status, payload } = utils.errorGenerator(error.details[0].type, error.message);
-    res.status(status).json(payload);
+    return res.status(status).json(payload);
+  }
+};
+
+const putValidation = async (req, res, next) => {
+  const { body } = req;
+  try {
+    await schemas.putSchema.validateAsync(body);
+    next();
+  } catch (error) {
+    const { status, payload } = utils.errorGenerator(error.details[0].type, error.message);
+    return res.status(status).json(payload);
   }
 };
 
@@ -76,4 +87,5 @@ module.exports = {
   tokenValidation,
   categoryValidation,
   postValidation,
+  putValidation,
 };

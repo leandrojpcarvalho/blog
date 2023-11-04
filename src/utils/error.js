@@ -9,6 +9,7 @@ const errorObj = {
   'invalid token': 401,
   'jwt expired': 401,
   'jwt malformed': 401,
+  UNAUTHORIZED: 401,
   'NOT FOUND': 404,
 };
 

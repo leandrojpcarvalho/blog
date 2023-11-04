@@ -67,8 +67,19 @@ const getById = async (id) => {
   return { status: 200, payload: result[0] };
 };
 
+const putById = async ({ title, content, id, user }) => {
+  const thisPostExist = await BlogPost.findOne({ where: { id } });
+  if (!thisPostExist) return utils.errorGenerator('NOT FOUND', 'Post not Found');
+  const thisIsTheOwner = await BlogPost.findOne({ where: { userId: user.id, id } });
+  if (!thisIsTheOwner) return utils.errorGenerator('UNAUTHORIZED', 'Unauthorized user');
+  await BlogPost.update({ title, content }, { where: { id } });
+  const { payload } = await getById(id);
+  return { status: 200, payload };
+};
+
 module.exports = {
   getAll,
   newPost,
   getById,
+  putById,
 };
