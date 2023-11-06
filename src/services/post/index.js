@@ -1,28 +1,24 @@
 const { BlogPost, User, Category, PostCategory } = require('../../models');
 const utils = require('../../utils');
 
-const getAll = async () => {
-  const result = await BlogPost.findAll({
-    include: [
-      {
-        attributes: {
-          exclude: ['password'],
-        },
-        model: User,
-        as: 'user',
+const getAll = async () => BlogPost.findAll({
+  include: [
+    {
+      attributes: {
+        exclude: ['password'],
       },
-      {
-        // attributes: {
-        //   exclude: ['PostCategory'],
-        // },
-        model: Category,
-        as: 'categories',
+      model: User,
+      as: 'user',
+    },
+    {
+      through: {
+        attributes: [],
       },
-    ],
-  });
-
-  return utils.removePostCategory(result);
-};
+      model: Category,
+      as: 'categories',
+    },
+  ],
+});
 
 const newPost = async (body) => {
   const theseCategoriesExists = await utils.validateArray(body, Category);
@@ -55,15 +51,14 @@ const getById = async (id) => {
         as: 'user',
       },
       {
-        // attributes: {
-        //   exclude: ['PostCategory'],
-        // },
+        through: {
+          attributes: [],
+        },
         model: Category,
         as: 'categories',
       },
     ],
   });
-  if (!result.length) return utils.errorGenerator('NOT FOUND', 'Post does not exist');
   return { status: 200, payload: result[0] };
 };
 
@@ -77,9 +72,20 @@ const putById = async ({ title, content, id, user }) => {
   return { status: 200, payload };
 };
 
+const deletePost = async ({ userId, postId }) => {
+  const thisPostExist = await BlogPost.findOne({ where: { id: postId } });
+  if (!thisPostExist) return utils.errorGenerator('NOT FOUND', 'Post does not exist');
+  if (thisPostExist.userId !== userId) { 
+    return utils.errorGenerator('UNAUTHORIZED', 'Unauthorized user');
+  }
+  await BlogPost.destroy({ where: { id: postId } });
+  return { status: 204, payload: '' };
+};
+
 module.exports = {
   getAll,
   newPost,
   getById,
   putById,
+  deletePost,
 };

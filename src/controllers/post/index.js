@@ -37,9 +37,16 @@ const putById = async (req, res) => {
   return res.status(status).json(payload);
 };
 
+const deletePost = async (req, res) => {
+  const { params: { id }, validation } = req;
+  const { status, payload } = await Service.post.deletePost({ userId: validation.id, postId: id });
+  return res.status(status).json(payload);
+};
+
 module.exports = {
   getAll,
   newPost,
   getById,
   putById,
+  deletePost,
 };
