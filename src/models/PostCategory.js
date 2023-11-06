@@ -30,24 +30,24 @@ const PostCategories = (sequelize, DataTypes) => {
       through: 'PostCategory',
       as:'categories'
     })
-    BlogPost.addScope('categoryLimited', {
-          include: [
-        {
-          attributes: {
-            exclude: ['password'],
-          },
-          model: User,
-          as: 'user',
-        },
-        {
-          through: {
-            attributes: [],
-          },
-          model: Category,
-          as: 'categories',
-        },
-      ],
-    })
+    // BlogPost.addScope('categoryLimited', {
+    //       include: [
+    //     {
+    //       attributes: {
+    //         exclude: ['password'],
+    //       },
+    //       model: User,
+    //       as: 'user',
+    //     },
+    //     {
+    //       through: {
+    //         attributes: [],
+    //       },
+    //       model: Category,
+    //       as: 'categories',
+    //     },
+    //   ],
+    // })
     Category.belongsToMany(BlogPost, {
       foreignKey: 'categoryId',
       otherKey: 'postId',
