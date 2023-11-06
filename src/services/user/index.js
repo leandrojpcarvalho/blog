@@ -16,7 +16,7 @@ const newUser = async (body) => {
 
 const getAll = async () => {
   const payload = await User.findAll({
-    attributes: ['displayName', 'id', 'image', 'email'],
+    attributes: { exclude: ['password'] },
   });
   return { status: 200, payload };
 };
@@ -26,7 +26,7 @@ const getById = async (id) => {
     where: {
       id,
     },
-    attributes: ['id', 'displayName', 'email', 'image'],
+    attributes: { exclude: ['password'] },
   });
   if (payload) return { status: 200, payload };
   return utils.errorGenerator('NOT FOUND', 'User does not exist');

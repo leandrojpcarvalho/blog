@@ -1,24 +1,8 @@
-const { BlogPost, User, Category, PostCategory } = require('../../models');
+const { Op } = require('sequelize');
+const { BlogPost, Category, PostCategory } = require('../../models');
 const utils = require('../../utils');
 
-const getAll = async () => BlogPost.findAll({
-  include: [
-    {
-      attributes: {
-        exclude: ['password'],
-      },
-      model: User,
-      as: 'user',
-    },
-    {
-      through: {
-        attributes: [],
-      },
-      model: Category,
-      as: 'categories',
-    },
-  ],
-});
+const getAll = async () => BlogPost.scope('categoryLimited').findAll();
 
 const newPost = async (body) => {
   const theseCategoriesExists = await utils.validateArray(body, Category);
@@ -40,25 +24,8 @@ const newPost = async (body) => {
 };
 
 const getById = async (id) => {
-  const result = await BlogPost.findAll({ 
-    where: { id },
-    include: [
-      {
-        attributes: {
-          exclude: ['password'],
-        },
-        model: User,
-        as: 'user',
-      },
-      {
-        through: {
-          attributes: [],
-        },
-        model: Category,
-        as: 'categories',
-      },
-    ],
-  });
+  const result = await BlogPost.scope('categoryLimited').findAll({ where: { id } });
+  if (!result[0]) return utils.errorGenerator('NOT FOUND', 'Post does not exist');
   return { status: 200, payload: result[0] };
 };
 
@@ -82,10 +49,26 @@ const deletePost = async ({ userId, postId }) => {
   return { status: 204, payload: '' };
 };
 
+const searchTerm = async (term) => {
+  const result = await BlogPost.scope('categoryLimited').findAll({ 
+    where: { 
+      [Op.or]: [
+        { title: {
+          [Op.like]: `${term}%`,
+        } },
+        { content: {
+          [Op.like]: `${term}%`,
+        } },
+      ],
+    } });
+  return { status: 200, payload: result };
+};
+
 module.exports = {
   getAll,
   newPost,
   getById,
   putById,
   deletePost,
+  searchTerm,
 };

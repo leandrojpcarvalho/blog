@@ -23,12 +23,30 @@ const PostCategories = (sequelize, DataTypes) => {
     timestamps: false
   });
 
-  PostCategoriesTable.associate = ({ BlogPost, Category}) => {
+  PostCategoriesTable.associate = ({ BlogPost, Category, User}) => {
     BlogPost.belongsToMany(Category, {
       foreignKey: 'postId',
       otherKey: 'categoryId',
       through: 'PostCategory',
       as:'categories'
+    })
+    BlogPost.addScope('categoryLimited', {
+          include: [
+        {
+          attributes: {
+            exclude: ['password'],
+          },
+          model: User,
+          as: 'user',
+        },
+        {
+          through: {
+            attributes: [],
+          },
+          model: Category,
+          as: 'categories',
+        },
+      ],
     })
     Category.belongsToMany(BlogPost, {
       foreignKey: 'categoryId',
