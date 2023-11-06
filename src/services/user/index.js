@@ -32,8 +32,14 @@ const getById = async (id) => {
   return utils.errorGenerator('NOT FOUND', 'User does not exist');
 };
 
+const deleteUser = async (id) => {
+  await User.destroy({ where: { id } });
+  return { status: 204, payload: '' };
+};
+
 module.exports = {
   newUser,
   getAll,
   getById,
+  deleteUser,
 };
